@@ -1,6 +1,7 @@
 {% extends 'base.html' %}{% load filter_tags %}
 
 {% block content %}
+{% include 'navbar.html' %}
 <div class="container">
     <div class="row p-lg-4 p-2 justify-content-center">
         <div class="col-12">
@@ -15,8 +16,8 @@
             <p class="project-disc">{{project.description|safe}}</p>
             
             <div class="mt-4">
-                <p class="mini-title">Tools:</p>
-                <p class="mb-0">All the tools that I used in this project:</p>
+                <p class="mini-title">Outils:</p>
+                <p class="mb-0">Les outils utilisés pour ce projets:</p>
                 {% with project.tools|split:"," as tools %}
                     {% for tool in tools %}
                         <span class="tool">{{tool}}</span>
@@ -26,13 +27,9 @@
 
             <div class="text-left pt-4">
                 <p class="mini-title mb-3">Preview:</p>
-                <a href="{{project.github}}" class="preview-btn">
+                <a href="{{project.github}}" target="_blank" class="preview-btn">
                     <i class="fab fa-github"></i>
-                    Source Code On Github
-                </a>
-                <a href="{{project.demo}}" class="preview-btn">
-                    <i class="fas fa-globe"></i> 
-                    Site Web On Live
+                    Code Source
                 </a>
             </div>
         </div>

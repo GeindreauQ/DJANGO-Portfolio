@@ -4,7 +4,6 @@ from django.core import serializers
 
 import json
 from django.db.models import Q
-from decouple import config
 
 from django.core.mail import send_mail
 from django.conf import settings
@@ -22,12 +21,13 @@ from info.models import (
 
 def email_send(data):
     old_message = Message.objects.last()
-    if old_message.name == data['name'] and old_message.email == data['email'] and old_message.message == data['message']:
+    if old_message and old_message.name == data['name'] and old_message.email == data['email'] and old_message.message == data['message']:
         return False
     subject = 'Portfolio : Mail from {}'.format(data['name'])
     message = '{}\nSender Email: {}'.format(data['message'], data['email'])
     email_from = settings.EMAIL_HOST_USER
     recipient_list = [settings.EMAIL_HOST_USER, ]
+    print(message)
     send_mail(subject, message, email_from, recipient_list)
     return True
 
@@ -35,7 +35,6 @@ def email_send(data):
 def homePage(request):
     template_name = 'homePage.html'
     context = {}
-
     if request.method == 'POST':
         if request.POST.get('rechaptcha', None):
             form = MessageForm(request.POST)
@@ -57,8 +56,8 @@ def homePage(request):
     if request.method == 'GET':
         form = MessageForm()
         competences = Competence.objects.all().order_by('id')
-        education = Education.objects.all().order_by('-id')
-        experiences = Experience.objects.all().order_by('-id')
+        education = Education.objects.all().order_by('-the_year')
+        experiences = Experience.objects.all().order_by('-the_year')
         projects = Project.objects.filter(show_in_slider=True).order_by('-id')
         info = Information.objects.first()
         context = {
@@ -68,7 +67,7 @@ def homePage(request):
             'experiences': experiences,
             'projects': projects,
             'form': form,
-            'recaptcha_key': config("recaptcha_site_key", default="")
+            'recaptcha_key': settings.RECAPTCHA_KEY
         }
     return render(request, template_name, context)
 

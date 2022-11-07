@@ -1,19 +1,20 @@
 {% extends 'base.html' %}{% load static %}{% load filter_tags %}
 
 {% block content %}
+{% include 'navbar.html' %}
     <div class="container">
         <div class="row pt-lg-4">
             <div class="col-12 text-center">
-                <p class="display-3 m-0">Search for Projects</p>
-                <p class="text-muted">Search for projects with titles, descriptions, or tools.</p>
-                <a class="text-success" href="{% url 'projectsPage' %}"><i class="fa fa-arrow-circle-left pr-2 mb-4"></i>Projects Page</a>
+                <p class="display-3 m-0">Chercher des Projets</p>
+                <p class="text-muted">Chercher un projet depuis son titre, sa description ou les outils utilisés.</p>
+                <a class="text-success" href="{% url 'projectsPage' %}"><i class="fa fa-arrow-circle-left pr-2 mb-4"></i>Page des Projets</a>
 
 
                 <form method="POST" action="{% url 'search' %}" id="search-form">
                     {% csrf_token %}
                     <div class="form-group">
                         <div class="input-group input-group-alternative mb-4">
-                            <input id="search-input" class="form-control form-control-alternative" name="searchText" placeholder="Search for projects title or a tools" type="text" required>
+                            <input id="search-input" class="form-control form-control-alternative" name="searchText" placeholder="Chercher un projet depuis son titre ou ses outils" type="text" required>
                             <div class="search-btn" id="search-btn">
                                 <span><i class="fa fa-search"></i></span>
                             </div>
@@ -26,7 +27,7 @@
 
         <hr class="mt-2 mb-4">
         {% if projects %}
-            <p class="text-muted">You search for <strong class="text-success">{{searchText}}</strong></p>
+            <p class="text-muted">Vous avez recherché <strong class="text-success">{{searchText}}</strong></p>
             <div class="row">
                 {% for project in projects %}
                     <div class="col-lg-4 mb-4 ">
@@ -57,7 +58,7 @@
             </div>
         {% else %}
             <div class="text-center">
-                <p class="display-1 text-muted">No Results Found</p>
+                <p class="display-1 text-muted">Pas de résultats</p>
             </div>
         {% endif %}
     </div>
